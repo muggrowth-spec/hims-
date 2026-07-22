@@ -117,9 +117,12 @@ ul { list-style: none; padding: 0; }
 }
 .site-header.scrolled { box-shadow: 0 6px 22px rgba(0,0,0,.35); border-color: rgba(127,209,196,.18); background: rgba(24,21,19,.96); }
 .header-inner { display: flex; align-items: center; gap: 1.5rem; padding: .7rem 0; }
-.brand { display: flex; align-items: center; gap: .6rem; }
+.brand { display: flex; align-items: center; gap: .65rem; }
 .brand-logo { height: 42px; width: auto; }
-.brand-mark { display: grid; place-items: center; }
+/* leaf-H mark (img) + wordmark lockup */
+.brand-mark { display: block; width: 46px; height: 46px; border-radius: 11px; object-fit: cover; flex: none; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
+.brand-name { display: flex; flex-direction: column; line-height: 1.06; font-family: "Lexend", sans-serif; font-weight: 800; letter-spacing: .01em; color: #fff; font-size: 1.02rem; white-space: nowrap; }
+.brand-name small { color: var(--gold-400); font-weight: 600; font-size: .64rem; letter-spacing: .05em; margin-top: 1px; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
 .brand-text strong { font-family: "Lexend", sans-serif; font-weight: 800; letter-spacing: .04em; color: #fff; font-size: 1.05rem; }
 .brand-text small { color: var(--gold-400); font-weight: 600; font-size: .68rem; letter-spacing: .06em; }
@@ -919,3 +922,25 @@ ul { list-style: none; padding: 0; }
 }
 .film-item:hover::before { transform: scaleX(1); }
 @media (max-width: 560px) { .film-item { flex-basis: 78vw; } }
+
+/* ============================================================
+   Multi-page restructure additions
+   ============================================================ */
+.brand-footer { margin-bottom: .9rem; }
+.footer-brand .brand-name { color: #fff; }
+
+/* Hero with no headline — keep the eyebrow/buttons/badges stack comfortable */
+.hero-clean .eyebrow { margin-bottom: 1.6rem; }
+.hero-clean .hero-actions { margin-bottom: 2rem; }
+
+/* Centered call-to-action under home teasers (→ dedicated pages) */
+.section-cta { text-align: center; margin-top: 2.75rem; }
+
+/* Product gallery (products.html) — white tiles, product banners contained */
+.product-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.pgal-item { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; display: grid; place-items: center; padding: .9rem; cursor: pointer; box-shadow: var(--shadow-sm); transition: transform .2s var(--ease), box-shadow .2s var(--ease); }
+.pgal-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.pgal-item:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.pgal-item:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 2px; }
+@media (max-width: 900px) { .product-gallery { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .product-gallery { grid-template-columns: 1fr; } .brand-name small { display: none; } .brand-name { font-size: .95rem; } .brand-mark { width: 40px; height: 40px; } }

@@ -69,9 +69,20 @@
   ];
 
   const photos = [
-    ["gallery-1.jpg", "At the Expo"], ["gallery-2.jpg", "Team & Partners"], ["exhibition-2.jpg", "Exhibition Booth"],
-    ["celebrity-1.jpg", "Celebrity Association"], ["csr-1.jpg", "CSR Initiative"], ["gallery-4.jpg", "Global Meetings"],
-    ["machinery-lg.jpg", "Production Floor"], ["product-show.jpg", "Product Showcase"]
+    ["pawan-award.jpg", "Honoured by the Hon'ble Union Finance Minister"],
+    ["gallery-client.jpg", "With Our Clients"],
+    ["celebrity-34.jpg", "Celebrity Association"],
+    ["celebrity-44.jpg", "Brand Associations"],
+    ["gallery-1.jpg", "At the Expo"],
+    ["gallery-2.jpg", "Team & Partners"],
+    ["gallery-10.jpg", "Global Meetings"],
+    ["gallery-13.jpg", "Industry Networking"],
+    ["gallery-33.jpg", "Trade Show Booth"],
+    ["gallery-36.jpg", "Product Display"],
+    ["gallery-37.jpg", "Exhibition Highlights"],
+    ["csr-2.jpg", "CSR Initiative"],
+    ["machinery-lg.jpg", "Production Floor"],
+    ["product-show.jpg", "Product Showcase"]
   ];
   const videos = [
     ["machinery-1.jpg", "Factory Tour"], ["machinery-lg.jpg", "Manufacturing Process"],
@@ -81,8 +92,10 @@
   const press = [
     ["media-mag-1.jpg", "Featured in a leading cosmetics trade magazine for our private-label and contract-manufacturing capabilities.", "Cosmetic Magazine"],
     ["media-mag-2.jpg", "Recognised for excellence in herbal, fragrance and personal-care product manufacturing.", "Cosmetic Magazine"],
-    ["media-1.jpg", "Covered for our international expo presence and growing global export footprint.", "Industry Press"],
-    ["media-3.jpg", "Highlighted among India's fast-growing contract manufacturers for beauty & wellness.", "Trade Press"]
+    ["media-12.jpg", "Regional coverage of our founder and the company's growth in the personal-care sector.", "Regional Press"],
+    ["media-14.jpg", "Covered for our international expo presence and growing global export footprint.", "Industry Press"],
+    ["media-16.jpg", "Highlighted among India's fast-growing contract manufacturers for beauty & wellness.", "Trade Press"],
+    ["media-18.jpg", "Featured for innovation in herbal and Ayurvedic product formulation.", "Business Press"]
   ];
 
   const stories = [

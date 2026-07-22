@@ -129,6 +129,48 @@
     ).join("");
   }
 
+  /* ---- Product gallery (products.html) — real product-range banners ---- */
+  const galleryGrid = grid("#productGallery");
+  if (galleryGrid) {
+    const N = 35, START = 11;                       // assets/img/product-11..35.png
+    const productShots = [];
+    for (let i = START; i <= N; i++) productShots.push(`assets/img/product-${i}.png`);
+    galleryGrid.innerHTML = productShots.map((src, i) =>
+      `<figure class="pgal-item reveal" data-idx="${i}" tabindex="0" role="button" aria-label="View product range ${i + 1}">
+         <img src="${src}" alt="Him Herbal manufactured product range ${i + 1}" loading="lazy">
+       </figure>`
+    ).join("");
+
+    /* lightbox (reuses the #lightbox markup on the page) */
+    const lb = grid("#lightbox");
+    if (lb) {
+      const lbImg = grid("#lbMedia"), lbCap = grid("#lbCaption");
+      let pos = 0;
+      const render = () => {
+        lbImg.innerHTML = `<img src="${productShots[pos]}" alt="Product range ${pos + 1}">`;
+        if (lbCap) lbCap.textContent = `Product range ${pos + 1} of ${productShots.length}`;
+      };
+      const open = (i) => { pos = i; render(); lb.hidden = false; document.body.style.overflow = "hidden"; grid("#lbClose")?.focus(); };
+      const close = () => { lb.hidden = true; document.body.style.overflow = ""; };
+      const move = (d) => { pos = (pos + d + productShots.length) % productShots.length; render(); };
+      galleryGrid.addEventListener("click", (e) => { const f = e.target.closest(".pgal-item"); if (f) open(+f.dataset.idx); });
+      galleryGrid.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        const f = e.target.closest(".pgal-item"); if (f) { e.preventDefault(); open(+f.dataset.idx); }
+      });
+      grid("#lbClose")?.addEventListener("click", close);
+      grid("#lbPrev")?.addEventListener("click", () => move(-1));
+      grid("#lbNext")?.addEventListener("click", () => move(1));
+      lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
+      document.addEventListener("keydown", (e) => {
+        if (lb.hidden) return;
+        if (e.key === "Escape") close();
+        if (e.key === "ArrowLeft") move(-1);
+        if (e.key === "ArrowRight") move(1);
+      });
+    }
+  }
+
   /* ---- Header shadow on scroll ---- */
   const header = document.getElementById("siteHeader");
   const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 8);
