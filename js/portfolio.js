@@ -48,16 +48,16 @@
   ];
 
   const portfolio = [
-    ["Signature Perfume", "Fragrance", "product-1.jpg"],
-    ["Eau de Parfum", "Fragrance", "product-2.jpg"],
-    ["Body Mist Range", "Personal Care", "product-3.jpg"],
-    ["Deodorant Line", "Personal Care", "product-4.jpg"],
-    ["Cosmetics Range", "Cosmetics", "product-5.jpg"],
-    ["Skin Care Serum", "Skin Care", "product-6.jpg"],
-    ["Attar Collection", "Fragrance", "product-7.jpg"],
+    ["Hand Sanitizer", "Sanitizers & Hygiene", "product-1.jpg"],
+    ["Germ Kill Spray", "Sanitizers & Hygiene", "product-2.jpg"],
+    ["Disinfectant Spray", "Home Care", "product-3.jpg"],
+    ["Protective Hygiene Spray", "Home Care", "product-4.jpg"],
+    ["Hand Wash Range", "Personal Care", "product-5.jpg"],
+    ["Shampoo & Hair Care", "Hair & Skin Care", "product-6.jpg"],
+    ["Skin & Body Care", "Hair & Skin Care", "product-7.jpg"],
     ["Private Label Range", "Personal Care", "product-show.jpg"]
   ];
-  const categories = ["All", "Fragrance", "Personal Care", "Cosmetics", "Skin Care"];
+  const categories = ["All", "Sanitizers & Hygiene", "Personal Care", "Hair & Skin Care", "Home Care"];
 
   const events = [
     ["exhibition-1.jpg", "International Expo", "Global Beauty Expo", "Showcased our fragrance and personal-care capabilities to international buyers."],

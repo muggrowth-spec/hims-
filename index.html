@@ -23,7 +23,7 @@
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="Him Herbal Healthcare Pvt. Ltd. home">
         <img src="assets/img/brand-mark.png" alt="" class="brand-mark" width="48" height="48" />
-        <span class="brand-name">Him Herbal <small>Healthcare Pvt. Ltd.</small></span>
+        <span class="brand-name">Himherbal <small>Healthcare Pvt. Ltd.</small></span>
       </a>
 
       <nav class="main-nav" id="mainNav" aria-label="Primary">
@@ -47,7 +47,7 @@
 
     <!-- ============ 1. HERO (clean cinematic video, click-to-unmute) ============ -->
     <section class="hero hero-video hero-bare" id="hero">
-      <video class="hero-vid" id="heroVid" autoplay muted loop playsinline preload="auto" poster="assets/img/hero-brand.png">
+      <video class="hero-vid" id="heroVid" autoplay muted loop playsinline preload="auto" poster="assets/img/feature-privatelabel.jpg">
         <source src="assets/hero.mp4" type="video/mp4" />
       </video>
       <!-- Browsers only autoplay muted video; this lets visitors turn the sound on. -->
@@ -66,7 +66,7 @@
           <h2>Your future brand — <span class="text-green">made by us</span></h2>
         </div>
         <figure class="brand-showcase-fig reveal">
-          <img src="assets/img/hero-brand.png" alt="A range of private-label perfumes, deodorants and personal-care products, each marked 'Your Future Brand' — ready to carry your own label" loading="lazy" />
+          <img src="assets/img/feature-privatelabel.jpg" alt="A man in a tailored suit presenting a premium 'Your Future Brand' perfume bottle — private-label ready" loading="lazy" />
         </figure>
         <div class="hero-actions brand-showcase-cta">
           <a href="contact.html" class="btn btn-primary">Request a Quote
@@ -96,18 +96,14 @@
       </div>
     </section>
 
-    <!-- ============ PARTNERS MARQUEE ============ -->
-    <section class="marquee-band partners" aria-label="Brands we manufacture for">
-      <div class="marquee" data-marquee data-speed="50">
+    <!-- ============ BRANDS / PARTNERS MARQUEE (logo strips) ============ -->
+    <section class="marquee-band partners" aria-label="Brands we manufacture">
+      <div class="marquee" data-marquee data-speed="45">
         <div class="marquee-track">
-          <span class="mq-item">Aura Naturals</span>
-          <span class="mq-item">GlowLeaf</span>
-          <span class="mq-item">Pure&amp;Co</span>
-          <span class="mq-item">Vedic Essence</span>
-          <span class="mq-item">HerbaCare</span>
-          <span class="mq-item">Bloomline</span>
-          <span class="mq-item">Natura Vibe</span>
-          <span class="mq-item">Ozone Botanics</span>
+          <span class="mq-item mq-strip"><img src="assets/img/brand-strip-1.png" alt="Him Herbal oils, Pioneer Jasmine &amp; Almond hair oil, Amla hair oil, hand sanitizer" loading="lazy"></span>
+          <span class="mq-item mq-strip"><img src="assets/img/brand-strip-2.png" alt="Pioneer Perfect Hair oil, Him Herbal body lotion &amp; cold cream, Perfect Care shampoo, hand wash" loading="lazy"></span>
+          <span class="mq-item mq-strip"><img src="assets/img/brand-strip-3.png" alt="Him Herbal Fair Skin cream, fairness cream for men, Boro Perfect, herbal balm, natural shampoo" loading="lazy"></span>
+          <span class="mq-item mq-strip"><img src="assets/img/brand-strip-4.png" alt="Pioneer Handwash, Cruize Deo, Smog Deo, John Phillips, Marconi perfume" loading="lazy"></span>
         </div>
       </div>
     </section>
@@ -117,7 +113,7 @@
       <div class="container about-grid">
         <div class="about-media mono-card">
           <div class="media-card media-tall has-img">
-            <img src="assets/img/feature-privatelabel.jpg" alt="A man in a suit presenting a private-label 'Your Future Brand' fragrance bottle" class="ph mono" width="1400" height="857" />
+            <img src="assets/img/stock-rnd.jpg" alt="In-house R&amp;D and formulation — laboratory glassware during product development" class="ph mono" width="1400" height="857" />
           </div>
         </div>
         <div class="about-copy">
@@ -170,6 +166,27 @@
           </a>
         </div>
       </div>
+    </section>
+
+    <!-- ============ 4. LATEST PRODUCTS (premium fragrance slider) ============ -->
+    <section class="section section-tint" id="latest">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow">Latest Products</span>
+          <h2>Our premium fragrance range</h2>
+          <p class="section-lead">A glimpse of the John Phillips, Marconi &amp; Pioneer Scent perfumes we manufacture — drag to browse, tap any card to view its scent pyramid.</p>
+        </div>
+      </div>
+      <div class="slider" id="latestSlider" aria-roledescription="carousel" aria-label="Latest premium fragrances">
+        <button class="slider-arrow prev" data-dir="-1" type="button" aria-label="Previous products">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <div class="slider-track" id="latestTrack"></div>
+        <button class="slider-arrow next" data-dir="1" type="button" aria-label="Next products">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+      <div class="container"><div class="slider-progress" aria-hidden="true"><span id="latestProgress"></span></div></div>
     </section>
 
     <!-- ============ 5. MANUFACTURING EXCELLENCE ============ -->
@@ -365,7 +382,7 @@
       <div class="footer-brand">
         <a href="index.html" class="brand brand-footer" aria-label="Him Herbal Healthcare Pvt. Ltd. home">
           <img src="assets/img/brand-mark.png" alt="" class="brand-mark" width="48" height="48" />
-          <span class="brand-name">Him Herbal <small>Healthcare Pvt. Ltd.</small></span>
+          <span class="brand-name">Himherbal <small>Healthcare Pvt. Ltd.</small></span>
         </a>
         <p>Manufacturing with trust. Partnering for growth. Your reliable private label &amp; contract manufacturing partner for beauty, wellness, fragrance &amp; healthcare.</p>
         <p class="footer-addr">Survey No. 168/140, Dabhel, Daman (U.T.) 396215, India</p>
@@ -393,6 +410,14 @@
   <a href="https://wa.me/919925140839" target="_blank" rel="noopener" class="fab" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.5A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.9.9-2.8-.2-.3A8 8 0 1 1 12 20Zm4.4-5.6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.8 1-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.5.5 0 0 0 0-.5c0-.1-.5-1.3-.7-1.7s-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3A2.8 2.8 0 0 0 6.5 12a4.9 4.9 0 0 0 1 2.6 11 11 0 0 0 4.3 3.8c1.6.6 1.9.5 2.3.5a2.5 2.5 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c0-.1-.2-.2-.4-.3Z"/></svg>
   </a>
+
+  <!-- Lightbox (Latest Products slider) -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+    <button class="lb-prev" id="lbPrev" aria-label="Previous">&#8249;</button>
+    <figure class="lb-figure"><div class="lb-media" id="lbMedia"></div><figcaption id="lbCaption"></figcaption></figure>
+    <button class="lb-next" id="lbNext" aria-label="Next">&#8250;</button>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>

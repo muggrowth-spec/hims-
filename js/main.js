@@ -103,9 +103,15 @@
 
   const catGrid = grid("#categoryGrid");
   if (catGrid) {
-    catGrid.innerHTML = categories.map(([name, ico]) =>
-      `<article class="cat-card reveal"><div class="cat-ico">${svg(ICON[ico])}</div><h3>${name}</h3></article>`
-    ).join("");
+    // Categories with a real product photo (assets/img/cat-<ico>.png). Roll-On and
+    // Balms have no matching product, so they keep the line icon (no mislabeling).
+    const CAT_IMG = new Set(["perfume", "mist", "oil", "wash", "cosmetic", "skin", "hair", "health", "personal", "aerosol"]);
+    catGrid.innerHTML = categories.map(([name, ico]) => {
+      const media = CAT_IMG.has(ico)
+        ? `<div class="cat-media"><img src="assets/img/cat-${ico}.png" alt="${name} — Him Herbal product" loading="lazy"></div>`
+        : `<div class="cat-ico">${svg(ICON[ico])}</div>`;
+      return `<article class="cat-card reveal">${media}<h3>${name}</h3></article>`;
+    }).join("");
   }
 
   const svcGrid = grid("#serviceGrid");
@@ -189,6 +195,83 @@
       sync();
     });
     sync();
+  }
+
+  /* ---- Latest Products slider (premium fragrance catalogue) ---- */
+  const latestTrack = grid("#latestTrack");
+  if (latestTrack) {
+    const COUNT = 36;                                  // assets/img/latest-01..36.jpg
+    const shots = [];
+    for (let i = 1; i <= COUNT; i++) shots.push(`assets/img/latest-${String(i).padStart(2, "0")}.jpg`);
+    latestTrack.innerHTML = shots.map((src, i) =>
+      `<figure class="slide-card" data-idx="${i}" tabindex="0" role="button" aria-label="View premium fragrance ${i + 1} of ${COUNT}">
+         <img src="${src}" alt="Premium fragrance ${i + 1} — John Phillips / Marconi, manufactured by Him Herbal" loading="lazy" draggable="false">
+       </figure>`
+    ).join("");
+
+    const slider = grid("#latestSlider");
+    const progress = grid("#latestProgress");
+    const step = () => {
+      const card = latestTrack.querySelector(".slide-card");
+      const gap = parseFloat(getComputedStyle(latestTrack).columnGap) || 20;
+      return card ? card.getBoundingClientRect().width + gap : latestTrack.clientWidth;
+    };
+    slider?.querySelectorAll(".slider-arrow").forEach((btn) =>
+      btn.addEventListener("click", () => latestTrack.scrollBy({ left: (+btn.dataset.dir) * step(), behavior: "smooth" }))
+    );
+    const syncProgress = () => {
+      if (!progress) return;
+      const max = latestTrack.scrollWidth - latestTrack.clientWidth;
+      progress.style.width = (max > 0 ? (latestTrack.scrollLeft / max) * 100 : 0) + "%";
+    };
+    latestTrack.addEventListener("scroll", syncProgress, { passive: true });
+    syncProgress();
+
+    /* drag-to-scroll for mouse (touch scrolls natively) */
+    let down = false, startX = 0, startLeft = 0, moved = 0;
+    latestTrack.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "touch") return;
+      down = true; moved = 0; startX = e.clientX; startLeft = latestTrack.scrollLeft;
+      latestTrack.classList.add("dragging");
+    });
+    window.addEventListener("pointermove", (e) => {
+      if (!down) return;
+      const dx = e.clientX - startX; moved = Math.max(moved, Math.abs(dx));
+      latestTrack.scrollLeft = startLeft - dx;
+    });
+    window.addEventListener("pointerup", () => { down = false; latestTrack.classList.remove("dragging"); });
+
+    /* lightbox (reuses #lightbox markup) */
+    const lb = grid("#lightbox");
+    if (lb) {
+      const lbImg = grid("#lbMedia"), lbCap = grid("#lbCaption");
+      let pos = 0;
+      const render = () => {
+        lbImg.innerHTML = `<img src="${shots[pos]}" alt="Premium fragrance ${pos + 1}">`;
+        if (lbCap) lbCap.textContent = `Premium fragrance — ${pos + 1} of ${COUNT}`;
+      };
+      const open = (i) => { pos = i; render(); lb.hidden = false; document.body.style.overflow = "hidden"; grid("#lbClose")?.focus(); };
+      const close = () => { lb.hidden = true; document.body.style.overflow = ""; };
+      const move = (d) => { pos = (pos + d + COUNT) % COUNT; render(); };
+      latestTrack.addEventListener("click", (e) => {
+        if (moved > 6) return;                          // ignore clicks that were actually a drag
+        const f = e.target.closest(".slide-card"); if (f) open(+f.dataset.idx);
+      });
+      latestTrack.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        const f = e.target.closest(".slide-card"); if (f) { e.preventDefault(); open(+f.dataset.idx); }
+      });
+      grid("#lbClose")?.addEventListener("click", close);
+      grid("#lbPrev")?.addEventListener("click", () => move(-1));
+      grid("#lbNext")?.addEventListener("click", () => move(1));
+      lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
+      document.addEventListener("keydown", (e) => {
+        if (lb.hidden) return;
+        if (e.key === "Escape") close();
+        if (e.key === "ArrowLeft") move(-1);
+        if (e.key === "ArrowRight") move(1);
+      });
+    }
   }
 
   /* ---- Header shadow on scroll ---- */
@@ -304,7 +387,7 @@
      To store enquiries in a Google Sheet, paste your deployed Google Apps
      Script Web App URL below (see google-sheet-setup.md for the 5-minute
      setup). Until then the form still validates and confirms to the user. */
-  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyyjxyLfpxzs27mtV8dgykbTZze6s8tTabpYKbSi5tTJyLPsuOtB4JPaT07KCFMv8XCPg/exec";
+  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbxWEjBH6H2WHeTz-htynV2IAEAqcS5BUQEW_SS2zFA4gvjs20hJ_rKl7sylH4kneZ4LOQ/exec";
   const form = document.getElementById("leadForm");
   if (form) {
     const showErr = (input, msg) => {
