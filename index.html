@@ -45,30 +45,43 @@
 
   <main id="main">
 
-    <!-- ============ 1. HERO (cinematic video background) ============ -->
-    <section class="hero hero-video hero-clean" id="hero">
-      <video class="hero-vid" autoplay muted loop playsinline preload="auto" poster="assets/img/feature-privatelabel.jpg" aria-hidden="true">
+    <!-- ============ 1. HERO (clean cinematic video, click-to-unmute) ============ -->
+    <section class="hero hero-video hero-bare" id="hero">
+      <video class="hero-vid" id="heroVid" autoplay muted loop playsinline preload="auto" poster="assets/img/hero-brand.png">
         <source src="assets/hero.mp4" type="video/mp4" />
       </video>
-      <div class="hero-scrim" aria-hidden="true"></div>
-      <div class="container hero-inner">
-        <div class="hero-copy">
-          <span class="eyebrow">Private Label • Contract Manufacturing • OEM • ODM</span>
-          <div class="hero-actions">
-            <a href="contact.html" class="btn btn-primary">Request a Quote
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-            <a href="products.html" class="btn btn-ghost">Explore Products
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-          </div>
-          <ul class="hero-trust">
-            <li>ISO 9001:2015</li>
-            <li>GMP Certified</li>
-            <li>AYUSH Approved</li>
-            <li>FDA Registered</li>
-          </ul>
+      <!-- Browsers only autoplay muted video; this lets visitors turn the sound on. -->
+      <button class="hero-sound" id="heroSound" type="button" aria-pressed="false" aria-label="Turn sound on">
+        <svg class="ic-muted" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <svg class="ic-sound" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+        <span class="hero-sound-txt">Tap for sound</span>
+      </button>
+    </section>
+
+    <!-- ============ BRAND SHOWCASE IMAGE ============ -->
+    <section class="brand-showcase" aria-label="Private label — your future brand">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow">Private Label • Contract Manufacturing • OEM • ODM</span>
+          <h2>Your future brand — <span class="text-green">made by us</span></h2>
         </div>
+        <figure class="brand-showcase-fig reveal">
+          <img src="assets/img/hero-brand.png" alt="A range of private-label perfumes, deodorants and personal-care products, each marked 'Your Future Brand' — ready to carry your own label" loading="lazy" />
+        </figure>
+        <div class="hero-actions brand-showcase-cta">
+          <a href="contact.html" class="btn btn-primary">Request a Quote
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="products.html" class="btn btn-outline">Explore Products
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <ul class="hero-trust brand-showcase-trust">
+          <li>ISO 9001:2015</li>
+          <li>GMP Certified</li>
+          <li>AYUSH Approved</li>
+          <li>FDA Registered</li>
+        </ul>
       </div>
     </section>
 

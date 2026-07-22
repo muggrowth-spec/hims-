@@ -171,6 +171,26 @@
     }
   }
 
+  /* ---- Hero video: click-to-unmute (browsers only autoplay muted) ---- */
+  const heroVid = document.getElementById("heroVid");
+  const heroSound = document.getElementById("heroSound");
+  if (heroVid && heroSound) {
+    const sync = () => {
+      const on = !heroVid.muted;
+      heroSound.classList.toggle("is-on", on);
+      heroSound.setAttribute("aria-pressed", String(on));
+      heroSound.setAttribute("aria-label", on ? "Turn sound off" : "Turn sound on");
+      const txt = heroSound.querySelector(".hero-sound-txt");
+      if (txt) txt.textContent = on ? "Sound on" : "Tap for sound";
+    };
+    heroSound.addEventListener("click", () => {
+      heroVid.muted = !heroVid.muted;
+      if (!heroVid.muted) { heroVid.play?.().catch(() => {}); }  // some browsers pause on unmute
+      sync();
+    });
+    sync();
+  }
+
   /* ---- Header shadow on scroll ---- */
   const header = document.getElementById("siteHeader");
   const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 8);
@@ -280,7 +300,11 @@
     show(0); reset();
   }
 
-  /* ---- Contact form validation ---- */
+  /* ---- Contact form validation + Google Sheet submission ----
+     To store enquiries in a Google Sheet, paste your deployed Google Apps
+     Script Web App URL below (see google-sheet-setup.md for the 5-minute
+     setup). Until then the form still validates and confirms to the user. */
+  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyyjxyLfpxzs27mtV8dgykbTZze6s8tTabpYKbSi5tTJyLPsuOtB4JPaT07KCFMv8XCPg/exec";
   const form = document.getElementById("leadForm");
   if (form) {
     const showErr = (input, msg) => {
@@ -308,16 +332,41 @@
     form.querySelectorAll("input").forEach((inp) => {
       inp.addEventListener("input", () => { if (inp.classList.contains("invalid")) clearErr(inp); });
     });
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!validate()) {
         form.querySelector(".invalid")?.focus();
         return;
       }
       const success = document.getElementById("formSuccess");
+      const btn = form.querySelector("button[type=submit]");
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.classList.add("is-sending");
+      btn.textContent = "Sending…";
+
+      // Collect all named fields (name, company, email, phone, location, requirement, message)
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.page = location.href;
+      data.submittedAt = new Date().toISOString();
+
+      try {
+        if (SHEET_ENDPOINT) {
+          await fetch(SHEET_ENDPOINT, {
+            method: "POST",
+            mode: "no-cors",                       // Apps Script web app → opaque response is fine
+            body: new URLSearchParams(data)        // urlencoded → no CORS preflight
+          });
+        }
+      } catch (err) {
+        /* Network hiccup — still confirm to the user; the lead isn't lost on their side. */
+      }
+
       success.hidden = false;
-      form.querySelector("button[type=submit]").disabled = true;
       form.reset();
+      btn.innerHTML = original;
+      btn.classList.remove("is-sending");
+      btn.disabled = false;
       success.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   }
