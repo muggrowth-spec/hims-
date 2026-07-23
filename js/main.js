@@ -59,7 +59,7 @@
 
   /* ---- Data ---- */
   const categories = [
-    ["Perfumes", "perfume"], ["Body Mist", "mist"], ["Roll-On", "rollon"], ["Balms", "balm"],
+    ["Perfumes", "perfume"], ["Body Mist", "mist"],
     ["Essential Oils", "oil"], ["Hand Wash", "wash"], ["Cosmetics", "cosmetic"], ["Skin Care", "skin"],
     ["Hair Care", "hair"], ["Healthcare", "health"], ["Personal Care", "personal"], ["Aerosols", "aerosol"]
   ];
@@ -470,6 +470,33 @@
     }, { threshold: 0.25 });
     lazyVids.forEach((v) => vidObs.observe(v));
   }
+
+  /* ---- Auto-advancing carousels (Latest Products + mobile card sliders) ----
+     Gently advances any horizontal scroll-snap track one card at a time, loops
+     back at the end, and pauses on hover / touch / tab-hidden. On desktop the
+     card sections are CSS grids (not scrollable), so tick() is a safe no-op. */
+  const autoSlide = (track, interval) => {
+    if (!track) return;
+    let paused = false;
+    const gapOf = () => parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 16;
+    const stepPx = () => { const c = track.querySelector(":scope > *"); return c ? c.getBoundingClientRect().width + gapOf() : track.clientWidth; };
+    const tick = () => {
+      if (paused || document.hidden) return;
+      const max = track.scrollWidth - track.clientWidth;
+      if (max <= 4) return;                              // not a scrollable carousel right now
+      const atEnd = track.scrollLeft >= max - 4;
+      track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + stepPx(), behavior: "smooth" });
+    };
+    const hold = () => { paused = true; clearTimeout(track._rt); track._rt = setTimeout(() => { paused = false; }, 5000); };
+    track.addEventListener("pointerenter", () => { paused = true; });
+    track.addEventListener("pointerleave", () => { paused = false; });
+    track.addEventListener("pointerdown", hold);
+    track.addEventListener("touchstart", hold, { passive: true });
+    track.addEventListener("keydown", hold);
+    setInterval(tick, interval);
+  };
+  autoSlide(grid("#latestTrack"), 4000);
+  ["#serviceGrid", "#whyGrid", ".infra-grid"].forEach((sel) => autoSlide(document.querySelector(sel), 4500));
 
   /* ---- Footer year ---- */
   const yr = document.getElementById("year");

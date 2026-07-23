@@ -254,7 +254,7 @@ ul { list-style: none; padding: 0; }
 .chip-ico[data-i="ent"]    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23222222' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='5'/%3E%3Cpath d='M20 21a8 8 0 0 0-16 0'/%3E%3C/svg%3E"); }
 
 /* ---------- Categories ---------- */
-.category-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 1rem; }
+.category-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 1rem; }
 .cat-card {
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm);
   padding: 1.5rem 1rem; text-align: center; box-shadow: var(--shadow-sm);
@@ -368,6 +368,23 @@ ul { list-style: none; padding: 0; }
 .pin:nth-child(5)::after { animation-delay: 1.5s; }
 .pin:nth-child(6)::after { animation-delay: .8s; }
 .pin:nth-child(7)::after { animation-delay: 1.8s; }
+/* Country labels + highlighted key export markets */
+.pin i {
+  position: absolute; left: 50%; top: 13px; transform: translateX(-50%);
+  white-space: nowrap; font-style: normal; font-family: "Lexend", sans-serif;
+  font-weight: 600; font-size: .72rem; letter-spacing: .01em; color: #eafaf5;
+  text-shadow: 0 1px 5px rgba(0,0,0,.8); pointer-events: none;
+}
+.pin.lbl-up i    { top: auto; bottom: 13px; }
+.pin.lbl-left i  { left: auto; right: 13px; top: 50%; transform: translateY(-50%); }
+.pin.lbl-right i { left: 13px; transform: translateY(-50%); top: 50%; }
+.pin-key b { background: var(--gold-400); box-shadow: 0 0 0 3px rgba(251,191,36,.45), 0 0 14px 3px rgba(251,191,36,.85); }
+.pin-key::after { background: rgba(251,191,36,.6); }
+.pin-key i { color: #fff; font-weight: 700; font-size: .78rem; }
+@media (max-width: 560px) {
+  .pin i { font-size: .58rem; }
+  .pin:not(.pin-key) i { display: none; }   /* phones: keep it clean — show key markets only */
+}
 @keyframes ping { 0%{ transform: scale(1); opacity: .8; } 75%,100%{ transform: scale(3.4); opacity: 0; } }
 
 /* ---------- Why ---------- */
@@ -525,7 +542,7 @@ ul { list-style: none; padding: 0; }
   .stats-grid .stat:last-child { grid-column: 1 / -1; }
 }
 @media (max-width: 560px) {
-  .category-grid, .cert-grid, .audience-grid, .infra-grid, .service-grid, .why-grid, .process-track { grid-template-columns: repeat(2,1fr); }
+  .category-grid, .cert-grid, .audience-grid, .process-track { grid-template-columns: repeat(2,1fr); }
   .process-step::after { display: none !important; }
   .field-row { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -1065,3 +1082,46 @@ ul { list-style: none; padding: 0; }
 .js .portfolio-grid .pf-item:nth-child(4n+3) { transition-delay: .18s; }
 .js .portfolio-grid .pf-item:nth-child(4n+4) { transition-delay: .27s; }
 @media (prefers-reduced-motion: reduce) { .js .portfolio-grid .pf-item.reveal { transform: none; transition: none; } }
+
+/* ============================================================
+   Mobile-first polish + swipe carousels
+   ============================================================ */
+/* Use dynamic viewport height so mobile browser chrome doesn't clip the hero */
+@supports (height: 100dvh) {
+  .hero-video { min-height: min(92dvh, 820px); }
+  .hero-bare { min-height: min(88dvh, 760px); }
+}
+
+/* Card sections become horizontal swipe carousels on phones (scroll-snap) */
+@media (max-width: 700px) {
+  .service-grid, .why-grid, .infra-grid {
+    display: flex; grid-template-columns: none; gap: 1rem;
+    overflow-x: auto; overflow-y: visible;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; align-items: stretch;
+    padding: .25rem .25rem 1rem; margin-inline: -.25rem;
+    scroll-padding-inline: .25rem;
+  }
+  .service-grid::-webkit-scrollbar,
+  .why-grid::-webkit-scrollbar,
+  .infra-grid::-webkit-scrollbar { display: none; }
+  .service-grid > *, .why-grid > *, .infra-grid > * {
+    flex: 0 0 85%; scroll-snap-align: center; margin: 0;
+  }
+  .infra-grid > * { flex-basis: 78%; }
+  /* horizontal carousels: force cards visible (the reveal observer may not fire off-screen) */
+  .js .service-grid .reveal, .js .why-grid .reveal { opacity: 1; transform: none; }
+}
+
+/* Swipe affordance line under each mobile carousel section head is unnecessary;
+   the peeking next card already signals horizontal scroll. */
+
+/* Latest Products slider: full-bleed peek on phones for a nicer swipe */
+@media (max-width: 560px) {
+  .slide-card { width: 88vw; }
+  .slider-track { scroll-padding-inline: 1.25rem; }
+}
+
+/* Belt-and-suspenders: nothing may cause horizontal page scroll */
+html, body { max-width: 100%; }
+.section, .marquee-band, .stats { overflow-x: clip; }

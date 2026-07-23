@@ -73,14 +73,24 @@
     ["gallery-client.jpg", "With Our Clients"],
     ["celebrity-34.jpg", "Celebrity Association"],
     ["celebrity-44.jpg", "Brand Associations"],
+    ["celebrity-2.jpg", "Celebrity Endorsement"],
+    ["celebrity-5.png", "Public Figure Visit"],
     ["gallery-1.jpg", "At the Expo"],
     ["gallery-2.jpg", "Team & Partners"],
+    ["gallery-3.jpg", "Exhibition Stall"],
+    ["gallery-4.jpg", "Team & Distributors"],
+    ["gallery-5.jpg", "International Buyers"],
+    ["gallery-6.jpg", "Award Ceremony"],
     ["gallery-10.jpg", "Global Meetings"],
     ["gallery-13.jpg", "Industry Networking"],
     ["gallery-33.jpg", "Trade Show Booth"],
     ["gallery-36.jpg", "Product Display"],
     ["gallery-37.jpg", "Exhibition Highlights"],
+    ["exhibition-1.jpg", "Global Beauty Expo"],
+    ["exhibition-3.jpg", "Private Label Summit"],
+    ["exhibition-5.jpg", "Export Trade Show"],
     ["csr-2.jpg", "CSR Initiative"],
+    ["csr-3.jpg", "Community Outreach"],
     ["machinery-lg.jpg", "Production Floor"],
     ["product-show.jpg", "Product Showcase"]
   ];
@@ -168,27 +178,15 @@
   });
   renderPortfolio("All");
 
-  /* ---- Gallery tabs ---- */
+  /* ---- Gallery: separate photo + video sections (no tabs) ---- */
   const photoGrid = $("#photoGrid");
   const videoGrid = $("#videoGrid");
-  photoGrid.innerHTML = photos.map(([img, label], i) =>
+  if (photoGrid) photoGrid.innerHTML = photos.map(([img, label], i) =>
     `<figure class="g-item has-img" data-type="photo" data-idx="${i}" tabindex="0" role="button" aria-label="View ${label}"><img src="assets/img/${img}" alt="${label}" class="ph mono" loading="lazy"><span class="g-label">${label}</span></figure>`
   ).join("");
-  videoGrid.innerHTML = videos.map(([img, label], i) =>
+  if (videoGrid) videoGrid.innerHTML = videos.map(([img, label], i) =>
     `<figure class="g-item video has-img" data-type="video" data-idx="${i}" tabindex="0" role="button" aria-label="Play ${label}"><img src="assets/img/${img}" alt="${label}" class="ph mono" loading="lazy"><span class="play"><span></span></span><span class="g-label">${label}</span></figure>`
   ).join("");
-  $("#galleryTabs").addEventListener("click", (e) => {
-    const b = e.target.closest(".gtab");
-    if (!b) return;
-    $("#galleryTabs").querySelectorAll(".gtab").forEach((t) => {
-      const on = t === b;
-      t.classList.toggle("active", on);
-      t.setAttribute("aria-selected", on);
-    });
-    const showVideos = b.dataset.tab === "videos";
-    photoGrid.hidden = showVideos;
-    videoGrid.hidden = !showVideos;
-  });
 
   /* ---- Lightbox (photos, videos, portfolio items) ---- */
   const lb = $("#lightbox");
