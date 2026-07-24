@@ -330,7 +330,10 @@
   const markReveal = () => document.querySelectorAll(".reveal:not(.in)").forEach((el) => revealObs.observe(el));
   markReveal();
   // sections themselves reveal
-  document.querySelectorAll(".section-head, .about-copy, .about-media, .excellence-copy, .contact-form").forEach((el) => {
+  // `.stats` and `.cert-grid` are observed too: their children animate in from
+  // `.in` (see the premium motion layer in styles.css). If the observer never
+  // fires, the 3s failsafe drops the `js` class and they render normally.
+  document.querySelectorAll(".section-head, .about-copy, .about-media, .excellence-copy, .contact-form, .stats, .cert-grid").forEach((el) => {
     el.classList.add("reveal"); revealObs.observe(el);
   });
 

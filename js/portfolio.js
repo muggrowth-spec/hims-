@@ -284,7 +284,7 @@
   }, { rootMargin: "-45% 0px -50% 0px" });
   spySections.forEach((s) => spy.observe(s));
 
-  document.querySelectorAll(".section-head, .about-copy, .about-media, .founder-copy, .founder-photo").forEach((el) => el.classList.add("reveal"));
+  document.querySelectorAll(".section-head, .about-copy, .about-media, .founder-copy, .founder-photo, .stats, .cert-grid").forEach((el) => el.classList.add("reveal"));
   markReveal();
 
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);

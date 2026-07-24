@@ -44,6 +44,13 @@
   --shadow-lg: 0 24px 55px rgba(13,43,45,.22);
   --space:     clamp(3.5rem, 7vw, 6rem);
   --ease:      cubic-bezier(.22,.61,.36,1);
+  /* Motion tokens — strong curves; built-in CSS easings are too weak for deliberate motion */
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);      /* entrances/exits — starts fast, feels responsive */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);     /* on-screen movement */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);   /* subtle overshoot for delight moments */
+  --dur-press: 160ms;
+  --dur-ui:    220ms;
+  --dur-panel: 320ms;
 }
 
 /* ---------- Reset ---------- */
@@ -615,7 +622,7 @@ ul { list-style: none; padding: 0; }
 
 /* Portfolio filter + grid */
 .filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; margin-bottom: 2rem; }
-.filter-btn { font-family:"Lexend",sans-serif; font-weight: 600; font-size: .9rem; padding: .5rem 1.1rem; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all .18s var(--ease); }
+.filter-btn { font-family:"Lexend",sans-serif; font-weight: 600; font-size: .9rem; padding: .5rem 1.1rem; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: color .18s var(--ease-out), background-color .18s var(--ease-out), border-color .18s var(--ease-out), transform .18s var(--ease-out); }
 .filter-btn:hover { border-color: var(--green-500); color: var(--green-700); }
 .filter-btn.active { background: var(--green-700); border-color: var(--green-700); color: #fff; }
 .portfolio-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.25rem; }
@@ -643,7 +650,7 @@ ul { list-style: none; padding: 0; }
 
 /* Gallery tabs + grid */
 .gallery-tabs { display: flex; gap: .5rem; justify-content: center; margin-bottom: 2rem; }
-.gtab { font-family:"Lexend",sans-serif; font-weight: 600; font-size: .95rem; padding: .6rem 1.4rem; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all .18s var(--ease); }
+.gtab { font-family:"Lexend",sans-serif; font-weight: 600; font-size: .95rem; padding: .6rem 1.4rem; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: color .18s var(--ease-out), background-color .18s var(--ease-out), border-color .18s var(--ease-out), transform .18s var(--ease-out); }
 .gtab.active { background: var(--green-700); border-color: var(--green-700); color: #fff; }
 .gallery-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
 .g-item { position: relative; aspect-ratio: 1; border-radius: var(--radius-sm); overflow: hidden; cursor: pointer; box-shadow: var(--shadow-sm); display: grid; place-items: end; color: #fff; }
@@ -1125,3 +1132,142 @@ ul { list-style: none; padding: 0; }
 /* Belt-and-suspenders: nothing may cause horizontal page scroll */
 html, body { max-width: 100%; }
 .section, .marquee-band, .stats { overflow-x: clip; }
+
+/* ============================================================
+   PREMIUM MOTION LAYER
+   Rules followed: transform/opacity only (GPU), UI motion < 300ms,
+   strong ease-out curves, never scale(0), hover gated to real
+   pointers, everything reduced-motion aware.
+   ============================================================ */
+
+/* ---------- 1. Press feedback — every pressable acknowledges touch ---------- */
+.btn:active,
+.filter-btn:active,
+.gtab:active,
+.cat-card:active,
+.slider-arrow:active,
+.hero-sound:active { transform: scale(.97); }
+.btn, .filter-btn, .gtab, .slider-arrow, .hero-sound { transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-press) var(--ease-out), color var(--dur-press) var(--ease-out), border-color var(--dur-press) var(--ease-out), box-shadow var(--dur-press) var(--ease-out); }
+.fab:active { transform: scale(.94); }
+
+/* ---------- 2. Buttons: light sweep on hover ---------- */
+.btn { position: relative; overflow: hidden; isolation: isolate; }
+.btn::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.28) 48%, transparent 76%);
+  transform: translateX(-120%); transition: transform .55s var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover::after { transform: translateX(120%); }
+  .btn:hover { transform: translateY(-2px); }
+}
+
+/* ---------- 3. Nav links: underline that grows from the left ---------- */
+.main-nav a { position: relative; }
+.main-nav a::after {
+  content: ""; position: absolute; left: .8rem; right: .8rem; bottom: .32rem; height: 2px;
+  background: var(--gold-400); border-radius: 2px;
+  transform: scaleX(0); transform-origin: left; transition: transform var(--dur-ui) var(--ease-out);
+}
+.main-nav a.active::after { transform: scaleX(1); }
+@media (hover: hover) and (pointer: fine) { .main-nav a:hover::after { transform: scaleX(1); } }
+@media (max-width: 860px) { .main-nav a::after { display: none; } }
+
+/* ---------- 4. Section headings: rise + settle as they enter ---------- */
+.js .section-head.reveal h2 { transform: translateY(14px); opacity: 0; transition: transform .6s var(--ease-out) .06s, opacity .6s var(--ease-out) .06s; }
+.js .section-head.reveal.in h2 { transform: none; opacity: 1; }
+.js .section-head.reveal .section-eyebrow { opacity: 0; transform: translateY(8px); transition: transform .5s var(--ease-out), opacity .5s var(--ease-out); }
+.js .section-head.reveal.in .section-eyebrow { opacity: 1; transform: none; }
+.js .section-head.reveal .section-lead { opacity: 0; transform: translateY(10px); transition: transform .6s var(--ease-out) .16s, opacity .6s var(--ease-out) .16s; }
+.js .section-head.reveal.in .section-lead { opacity: 1; transform: none; }
+
+/* ---------- 5. Cards: lift with a soft brand glow ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .cat-card:hover  { transform: translateY(-6px); box-shadow: 0 18px 38px rgba(13,43,45,.16), 0 0 0 1px var(--green-500); }
+  .service-card:hover, .why-card:hover { transform: translateY(-6px); box-shadow: 0 20px 44px rgba(13,43,45,.18); }
+  .cert-badge:hover { transform: translateY(-5px) scale(1.02); }
+  .infra-card:hover { transform: translateY(-5px); }
+  .team-card:hover  { transform: translateY(-6px); }
+}
+.service-card, .why-card, .cert-badge, .infra-card, .cat-card {
+  transition: transform var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out);
+}
+/* icon inside a card gives a little life on hover */
+.cat-card .cat-ico, .service-ico, .why-ico { transition: transform var(--dur-ui) var(--ease-spring); }
+@media (hover: hover) and (pointer: fine) {
+  .cat-card:hover .cat-ico, .service-card:hover .service-ico, .why-card:hover .why-ico { transform: scale(1.1) rotate(-4deg); }
+  .cat-card:hover .cat-media img { transform: scale(1.07); }
+}
+.cat-media img { transition: transform .35s var(--ease-out); }
+
+/* ---------- 6. Product photos: slow zoom while hovered ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .pgal-item:hover img, .slide-card:hover img { transform: scale(1.05); }
+}
+.pgal-item img, .slide-card img { transition: transform .6s var(--ease-out); }
+
+/* ---------- 7. Certification badges: staggered pop-in ---------- */
+.js .cert-grid .cert-badge { opacity: 0; transform: translateY(16px) scale(.96); transition: opacity .5s var(--ease-out), transform .5s var(--ease-spring); }
+.js .cert-grid.in .cert-badge, .js .section-head.in ~ .cert-grid .cert-badge { opacity: 1; transform: none; }
+.js .cert-grid .cert-badge:nth-child(2) { transition-delay: .06s; }
+.js .cert-grid .cert-badge:nth-child(3) { transition-delay: .12s; }
+.js .cert-grid .cert-badge:nth-child(4) { transition-delay: .18s; }
+.js .cert-grid .cert-badge:nth-child(5) { transition-delay: .24s; }
+.js .cert-grid .cert-badge:nth-child(6) { transition-delay: .30s; }
+
+/* ---------- 8. Gold accent text: slow luminous shimmer ---------- */
+.text-gold {
+  background: linear-gradient(100deg, var(--gold-400) 20%, #ffffff 46%, var(--gold-400) 72%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: goldSheen 7s var(--ease-in-out) infinite;
+}
+@keyframes goldSheen { 0%, 100% { background-position: 140% 0; } 50% { background-position: -40% 0; } }
+
+/* ---------- 9. Stats: numbers rise as the bar enters ----------
+   These two containers only orchestrate their children, so neutralise the
+   generic .reveal transform on the wrapper to avoid compounding movement. */
+.js .stats.reveal, .js .cert-grid.reveal { opacity: 1; transform: none; }
+.js .stat { opacity: 0; transform: translateY(14px); transition: opacity .55s var(--ease-out), transform .55s var(--ease-out); }
+.js .stats.in .stat { opacity: 1; transform: none; }
+.js .stats.in .stat:nth-child(2) { transition-delay: .07s; }
+.js .stats.in .stat:nth-child(3) { transition-delay: .14s; }
+.js .stats.in .stat:nth-child(4) { transition-delay: .21s; }
+.js .stats.in .stat:nth-child(5) { transition-delay: .28s; }
+
+/* ---------- 10. Map pins: gentle float so the map feels alive ---------- */
+.pin b { animation: pinFloat 3.4s var(--ease-in-out) infinite; }
+.pin:nth-child(even) b { animation-delay: 1.1s; }
+@keyframes pinFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+/* ---------- 11. Timeline: dots pop as each milestone arrives ---------- */
+.js .tl-item .tl-dot { transform: scale(.4); opacity: 0; transition: transform .45s var(--ease-spring), opacity .45s var(--ease-out); }
+.js .tl-item.in .tl-dot { transform: scale(1); opacity: 1; }
+
+/* ---------- 12. Footer + contact links: slide on hover ---------- */
+.footer-col a, .contact-list a { display: inline-block; transition: transform var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .footer-col a:hover, .contact-list a:hover { transform: translateX(4px); } }
+
+/* ---------- 13. WhatsApp FAB: soft attention pulse ---------- */
+.fab { position: fixed; transition: transform var(--dur-ui) var(--ease-spring), box-shadow var(--dur-ui) var(--ease-out); }
+.fab::before {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; z-index: -1;
+  background: rgba(37,211,102,.55); animation: fabPulse 2.8s var(--ease-out) infinite;
+}
+@keyframes fabPulse { 0% { transform: scale(1); opacity: .55; } 70%, 100% { transform: scale(1.7); opacity: 0; } }
+@media (hover: hover) and (pointer: fine) { .fab:hover { transform: scale(1.08); } }
+
+/* ---------- 14. Respect reduced motion — keep meaning, drop movement ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .btn::after, .fab::before { display: none; }
+  .text-gold { animation: none; }
+  .pin b { animation: none; }
+  .js .section-head.reveal h2,
+  .js .section-head.reveal .section-eyebrow,
+  .js .section-head.reveal .section-lead,
+  .js .cert-grid .cert-badge,
+  .js .stat,
+  .js .tl-item .tl-dot { opacity: 1; transform: none; transition: opacity .2s ease; }
+  .btn:active, .filter-btn:active, .gtab:active, .cat-card:active, .fab:active { transform: none; }
+}
