@@ -195,6 +195,46 @@
       sync();
     });
     sync();
+
+    /* ---- Start with sound, as early as the browser allows ------------------
+       Every major browser BLOCKS autoplay-with-sound until the user has
+       interacted with the page (Chrome allows it only for sites with a high
+       Media Engagement Index; Safari/Firefox effectively never on first visit).
+       There is no way to force it — so this does the most that is possible:
+
+         1. Attempt unmuted playback immediately.
+         2. If the browser rejects it, fall back to muted playback (so the
+            video still starts with no delay) and arm a one-shot listener.
+         3. The very first interaction anywhere — tap, click, key, scroll —
+            turns the sound on automatically, without the user hunting for
+            the button.                                                     */
+    var armed = false;
+    var enableSound = function () {
+      if (!armed) return;
+      armed = false;
+      heroVid.muted = false;
+      heroVid.play?.().catch(function () {});
+      sync();
+      ["pointerdown", "touchstart", "keydown", "wheel", "scroll"].forEach(function (evt) {
+        window.removeEventListener(evt, enableSound, true);
+      });
+    };
+
+    heroVid.muted = false;                       // try with sound first
+    var attempt = heroVid.play?.();
+    if (attempt && typeof attempt.catch === "function") {
+      attempt.then(function () {
+        sync();                                  // allowed — sound is already on
+      }).catch(function () {
+        heroVid.muted = true;                    // blocked — keep it playing, silently
+        heroVid.play?.().catch(function () {});
+        sync();
+        armed = true;
+        ["pointerdown", "touchstart", "keydown", "wheel", "scroll"].forEach(function (evt) {
+          window.addEventListener(evt, enableSound, { capture: true, passive: true });
+        });
+      });
+    }
   }
 
   /* ---- Latest Products slider (premium fragrance catalogue) ---- */

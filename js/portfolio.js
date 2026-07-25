@@ -86,17 +86,17 @@
     ["gallery-33.jpg", "Trade Show Booth"],
     ["gallery-36.jpg", "Product Display"],
     ["gallery-37.jpg", "Exhibition Highlights"],
-    ["exhibition-1.jpg", "Global Beauty Expo"],
-    ["exhibition-3.jpg", "Private Label Summit"],
-    ["exhibition-5.jpg", "Export Trade Show"],
+    ["celebrity-1.jpg", "Celebrity Visit"],
+    ["celebrity-3.jpg", "Brand Ambassadors"],
+    ["csr-1.jpg", "CSR & Community"],
     ["csr-2.jpg", "CSR Initiative"],
     ["csr-3.jpg", "Community Outreach"],
-    ["machinery-lg.jpg", "Production Floor"],
-    ["product-show.jpg", "Product Showcase"]
+    ["stock-machinery.jpg", "Production Floor"],
+    ["celebrity-3b.png", "Brand Associations"]
   ];
   const videos = [
     ["machinery-1.jpg", "Factory Tour"], ["machinery-lg.jpg", "Manufacturing Process"],
-    ["product-1.jpg", "Product Showcase"], ["feature-privatelabel.jpg", "Private Label Story"]
+    ["media-2.jpg", "Product Showcase"], ["feature-privatelabel.jpg", "Private Label Story"]
   ];
 
   const press = [

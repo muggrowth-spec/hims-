@@ -1,0 +1,161 @@
+/* ============================================================
+   HIMHERBAL — REFINEMENT PASS
+   Goal: the restraint that makes high-end manufacturer sites feel
+   expensive — bigger + lighter type, editorial line-breaks, more
+   whitespace, tighter colour discipline, calmer motion.
+
+   Additive only. Loads AFTER styles.css.
+   Delete this file + js/refined.js to revert completely.
+
+   SAFETY: rules that hide content are scoped to `html.refined`,
+   added by refined.js only on success and removed by its watchdog.
+   If that JS never runs, nothing is hidden.
+   ============================================================ */
+
+:root {
+  /* Zymo-grade reveal curve, measured off their site: 0.8s ease-out */
+  --ease-reveal: cubic-bezier(0.26, 1, 0.48, 1);
+
+  /* More generous vertical rhythm — the single biggest "premium" lever */
+  --space: clamp(5rem, 10vw, 9rem);
+}
+
+/* ============================================================
+   1. TYPOGRAPHY — larger, lighter, tighter
+   ============================================================ */
+h1, h2 {
+  font-weight: 500;              /* was 600 — lighter reads more expensive */
+  letter-spacing: -0.028em;
+  line-height: 1.02;
+}
+
+/* Display headings scale up noticeably.
+   NOTE on max-width: the editorial line-break only reads well when a heading
+   still gets 2–4 words per line. Too tight (≈16ch) and a short headline
+   shatters into one-word-per-line, which looks broken rather than designed. */
+.section-head h2 { font-size: clamp(2.4rem, 5.2vw, 4.25rem); max-width: 24ch; }
+.about-copy h2,
+.excellence-copy h2,
+.contact-copy h2,
+.global-copy h2 { font-size: clamp(2.1rem, 4vw, 3.4rem); max-width: 22ch; }
+.cta-band h2 { font-size: clamp(2rem, 3.6vw, 3rem); max-width: 24ch; }
+.founder-copy h2 { font-size: clamp(1.6rem, 2.9vw, 2.4rem); line-height: 1.22; }
+
+/* Section heads: left-aligned editorial block, not centred marketing copy.
+   This is the single biggest tonal shift — centred headlines read as an ad,
+   left-aligned ones read as a considered editorial layout. */
+.section-head {
+  max-width: none;
+  text-align: left;
+  margin-inline: 0;
+}
+.section-head .section-lead {
+  max-width: 46ch;
+  font-size: 1.06rem;
+  margin-inline: 0;          /* was auto-centred */
+  margin-top: 1.15rem;
+}
+.section-head h2 { margin-inline: 0; }
+
+/* the "view all" CTA under teaser grids follows the same left edge */
+.section-cta { text-align: left; }
+
+/* Kicker label: smaller, wider tracking — a quiet system marker */
+.section-eyebrow {
+  font-size: .7rem; letter-spacing: .2em; font-weight: 600;
+}
+
+/* Body copy gets a touch more air */
+.about-copy p, .section-lead, .excellence-copy p { line-height: 1.72; }
+
+/* ============================================================
+   2. MASKED LINE REVEAL  (the signature editorial move)
+   Structure built by refined.js:
+     <h2><span class="ln"><span>…line…</span></span> …</h2>
+   ============================================================ */
+html.refined .ln { display: block; overflow: hidden; }
+html.refined .ln > span {
+  display: block;
+  transform: translateY(102%);
+  transition: transform .8s var(--ease-reveal);
+}
+html.refined .ln.in > span { transform: translateY(0); }
+
+/* stagger each successive line */
+html.refined .ln:nth-child(2) > span  { transition-delay: .07s; }
+html.refined .ln:nth-child(3) > span  { transition-delay: .14s; }
+html.refined .ln:nth-child(4) > span  { transition-delay: .21s; }
+html.refined .ln:nth-child(5) > span  { transition-delay: .28s; }
+html.refined .ln:nth-child(6) > span  { transition-delay: .35s; }
+html.refined .ln:nth-child(n+7) > span { transition-delay: .42s; }
+
+/* ============================================================
+   3. COLOUR DISCIPLINE — one accent, used sparingly
+   Zymo runs a single accent on near-monochrome. Our teal stays the
+   hero colour; the decorative shimmer goes so the accent reads as
+   intentional rather than ornamental.
+   ============================================================ */
+.text-gold {
+  animation: none;                       /* was a looping sheen */
+  -webkit-text-fill-color: initial;
+  background: none;
+  color: var(--gold-400);
+}
+.section-dark .text-gold,
+.excellence .text-gold,
+.contact .text-gold,
+.hero .text-gold { color: var(--gold-400); }
+.text-green { color: var(--primary); }
+
+/* calmer ambient decoration (Zymo ships zero looping keyframes) */
+.pin b { animation: none; }
+.fab::before { animation-duration: 4.5s; }
+
+/* ============================================================
+   4. CARDS & SURFACES — quieter, more space inside
+   ============================================================ */
+.cat-card { padding: 1.9rem 1.15rem; }
+.service-card, .why-card { padding: 2.1rem 1.9rem; }
+.section-head + .category-grid,
+.section-head + .service-grid,
+.section-head + .why-grid,
+.section-head + .infra-grid,
+.section-head + .cert-grid { margin-top: 3.25rem; }
+.section-cta { margin-top: 3.5rem; }
+
+/* hairline borders instead of heavy shadows */
+.cat-card, .service-card, .why-card, .cert-badge, .team-card {
+  box-shadow: 0 1px 2px rgba(13,43,45,.04);
+  border: 1px solid var(--line);
+}
+@media (hover: hover) and (pointer: fine) {
+  .cat-card:hover, .service-card:hover, .why-card:hover {
+    box-shadow: 0 18px 40px -18px rgba(13,43,45,.22);
+    border-color: var(--green-500);
+  }
+}
+
+/* ============================================================
+   5. NAVBAR — lighter, more space between items
+   ============================================================ */
+.header-inner { padding: 1rem 0; }
+.main-nav ul { gap: .15rem; }
+.main-nav a { font-size: .95rem; letter-spacing: .005em; }
+
+/* ============================================================
+   6. MOBILE — keep the scale sane
+   ============================================================ */
+@media (max-width: 860px) {
+  :root { --space: clamp(3.25rem, 9vw, 4.5rem); }
+  .section-head h2 { font-size: clamp(2rem, 8.4vw, 2.9rem); max-width: 100%; }
+  .about-copy h2, .excellence-copy h2, .contact-copy h2, .global-copy h2,
+  .cta-band h2 { font-size: clamp(1.85rem, 7.6vw, 2.5rem); max-width: 100%; }
+  .service-card, .why-card { padding: 1.75rem 1.5rem; }
+}
+
+/* ============================================================
+   7. REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html.refined .ln > span { transform: none; transition: opacity .3s ease; }
+}

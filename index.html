@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Lexend:wght@300;400;500;600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/refined.css" />
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -47,7 +48,7 @@
 
     <!-- ============ 1. HERO (clean cinematic video, click-to-unmute) ============ -->
     <section class="hero hero-video hero-bare" id="hero">
-      <video class="hero-vid" id="heroVid" autoplay muted loop playsinline preload="auto" poster="assets/img/feature-privatelabel.jpg">
+      <video class="hero-vid" id="heroVid" autoplay muted loop playsinline preload="auto">
         <source src="assets/hero.mp4" type="video/mp4" />
       </video>
       <!-- Browsers only autoplay muted video; this lets visitors turn the sound on. -->
@@ -110,7 +111,7 @@
       <div class="container about-grid">
         <div class="about-media mono-card">
           <div class="media-card media-tall has-img">
-            <img src="assets/img/stock-rnd.jpg" alt="In-house R&amp;D and formulation — laboratory glassware during product development" class="ph mono" width="1400" height="857" />
+            <img src="assets/img/stock-machinery.jpg" alt="Him Herbal team at a cosmetics manufacturing vessel" class="ph mono" width="1400" height="857" />
           </div>
         </div>
         <div class="about-copy">
@@ -221,12 +222,10 @@
         </div>
       </div>
       <div class="filmstrip" id="filmstrip">
-        <figure class="film-item"><img src="assets/img/stock-lab.jpg" alt="Quality control laboratory" class="ph mono" loading="lazy"><figcaption>Quality Control Lab</figcaption></figure>
-        <figure class="film-item"><img src="assets/img/stock-rnd.jpg" alt="Research and formulation" class="ph mono" loading="lazy"><figcaption>R&amp;D &amp; Formulation</figcaption></figure>
-        <figure class="film-item"><img src="assets/img/machinery-lg.jpg" alt="Production machinery" class="ph mono" loading="lazy"><figcaption>Production Floor</figcaption></figure>
-        <figure class="film-item"><img src="assets/img/stock-manufacturing.jpg" alt="Automated filling line" class="ph mono" loading="lazy"><figcaption>Filling &amp; Packing</figcaption></figure>
-        <figure class="film-item"><img src="assets/img/product-show.jpg" alt="Finished private label products" class="ph mono" loading="lazy"><figcaption>Finished Products</figcaption></figure>
-        <figure class="film-item"><img src="assets/img/product-2.jpg" alt="Him Herbal fragrance product" class="ph mono" loading="lazy"><figcaption>Fragrances &amp; Perfumes</figcaption></figure>
+        <figure class="film-item"><img src="assets/img/stock-rnd.jpg" alt="Laboratory glassware during formulation development" class="ph mono" loading="lazy"><figcaption>R&amp;D &amp; Formulation</figcaption></figure>
+        <figure class="film-item"><img src="assets/img/stock-lab.jpg" alt="Quality control laboratory testing" class="ph mono" loading="lazy"><figcaption>Quality Control Lab</figcaption></figure>
+        <figure class="film-item"><img src="assets/img/machinery-lg.jpg" alt="Cosmetics production vessel on the manufacturing floor" class="ph mono" loading="lazy"><figcaption>Production Floor</figcaption></figure>
+        <figure class="film-item"><img src="assets/img/product-16.png" alt="Him Herbal natural moisturising body lotion range, finished and packed" class="ph mono" loading="lazy"><figcaption>Finished Products</figcaption></figure>
       </div>
     </section>
 
@@ -424,5 +423,6 @@
   <script src="js/main.js"></script>
   <script src="js/fx.js"></script>
   <script type="module" src="js/motion-fx.js"></script>
+  <script src="js/refined.js" defer></script>
 </body>
 </html>
